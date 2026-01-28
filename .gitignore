@@ -64,3 +64,10 @@ cmake-build-debug/
 local.properties
 .log
 .exe
+*.pt
+*.bin
+*.wts
+*.mp4
+*.mp3
+*.ogg
+*.wav
