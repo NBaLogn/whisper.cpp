@@ -1,25 +1,26 @@
+import os
 import subprocess
 import sys
-import os
+
 
 def process_audio(wav_file, model_name="base.en"):
-    """
-    Processes an audio file using a specified model and returns the processed string.
+    """Processes an audio file using a specified model and returns the processed string.
 
     :param wav_file: Path to the WAV file
     :param model_name: Name of the model to use
     :return: Processed string output from the audio processing
     :raises: Exception if an error occurs during processing
     """
-
     model = f"./models/ggml-{model_name}.bin"
 
     # Check if the file exists
     if not os.path.exists(model):
-        raise FileNotFoundError(f"Model file not found: {model} \n\nDownload a model with this command:\n\n> bash ./models/download-ggml-model.sh {model_name}\n\n")
+        msg = f"Model file not found: {model} \n\nDownload a model with this command:\n\n> bash ./models/download-ggml-model.sh {model_name}\n\n"
+        raise FileNotFoundError(msg)
 
     if not os.path.exists(wav_file):
-        raise FileNotFoundError(f"WAV file not found: {wav_file}")
+        msg = f"WAV file not found: {wav_file}"
+        raise FileNotFoundError(msg)
 
     full_command = f"./main -m {model} -f {wav_file} -nt"
 
@@ -30,13 +31,13 @@ def process_audio(wav_file, model_name="base.en"):
     output, error = process.communicate()
 
     if error:
-        raise Exception(f"Error processing audio: {error.decode('utf-8')}")
+        msg = f"Error processing audio: {error.decode('utf-8')}"
+        raise Exception(msg)
 
     # Process and return the output string
-    decoded_str = output.decode('utf-8').strip()
-    processed_str = decoded_str.replace('[BLANK_AUDIO]', '').strip()
+    decoded_str = output.decode("utf-8").strip()
+    return decoded_str.replace("[BLANK_AUDIO]", "").strip()
 
-    return processed_str
 
 def main():
     if len(sys.argv) >= 2:

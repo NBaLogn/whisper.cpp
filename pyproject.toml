@@ -11,3 +11,8 @@ dependencies = [
     "silero-vad>=6.2.0",
     "torch==2.7",
 ]
+
+[project.optional-dependencies]
+audio = [
+    "datasets>=4.5.0",
+]
